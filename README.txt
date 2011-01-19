@@ -1,0 +1,1 @@
+You can find each exercise instruction in the "TODO.txt" file along each exercise's .sln file.
