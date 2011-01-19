@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ReadModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="ReadModelStoreContainer">
+    <EntitySet Name="MediaItems" EntityType="ReadModel.Store.MediaItems" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CustomerItems" EntityType="ReadModel.Store.CustomerItems" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CustomerRentedItems" EntityType="ReadModel.Store.CustomerRentedItems" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <EntityType Name="MediaItems">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CustomerItems">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CanRent" Type="bit" Nullable="false" />
+    <Property Name="CanReturn" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CustomerRentedItems">
+    <Key>
+      <PropertyRef Name="MediaId" />
+      <PropertyRef Name="CustomerId" />
+    </Key>
+    <Property Name="MediaId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="CustomerId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="CustomerName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="MediaTitle" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DueDate" Type="datetime" Nullable="false" />
+  </EntityType>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="ReadModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+        <EntityContainer Name="ReadModelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="MediaItems" EntityType="ReadModel.MediaItem" />
+          <EntitySet Name="CustomerItems" EntityType="ReadModel.CustomerItem" />
+          <EntitySet Name="CustomerRentedItems" EntityType="ReadModel.CustomerRentedItem" />
+        </EntityContainer>
+        <EntityType Name="MediaItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="String" Name="Title" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CustomerItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="Boolean" Name="CanRent" Nullable="false" />
+          <Property Type="Boolean" Name="CanReturn" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CustomerRentedItem">
+          <Key>
+            <PropertyRef Name="MediaId" />
+            <PropertyRef Name="CustomerId" />
+          </Key>
+          <Property Type="Guid" Name="MediaId" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="CustomerId" Nullable="false" />
+          <Property Type="String" Name="CustomerName" Nullable="false" />
+          <Property Type="String" Name="MediaTitle" Nullable="false" />
+          <Property Type="DateTime" Name="DueDate" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ReadModelStoreContainer" CdmEntityContainer="ReadModelContainer">
+    <EntitySetMapping Name="MediaItems">
+      <EntityTypeMapping TypeName="IsTypeOf(ReadModel.MediaItem)">
+        <MappingFragment StoreEntitySet="MediaItems">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CustomerItems">
+      <EntityTypeMapping TypeName="IsTypeOf(ReadModel.CustomerItem)">
+        <MappingFragment StoreEntitySet="CustomerItems">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="CanRent" ColumnName="CanRent" />
+          <ScalarProperty Name="CanReturn" ColumnName="CanReturn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CustomerRentedItems">
+      <EntityTypeMapping TypeName="IsTypeOf(ReadModel.CustomerRentedItem)">
+        <MappingFragment StoreEntitySet="CustomerRentedItems">
+          <ScalarProperty Name="MediaId" ColumnName="MediaId" />
+          <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+          <ScalarProperty Name="MediaTitle" ColumnName="MediaTitle" />
+          <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram Name="ReadModel" >
+        <EntityTypeShape EntityType="ReadModel.MediaItem" Width="1.5" PointX="6.125" PointY="3.125" Height="1.4033821614583331" />
+        <EntityTypeShape EntityType="ReadModel.CustomerItem" Width="1.5" PointX="4.125" PointY="1.75" Height="1.787985026041667" />
+        <EntityTypeShape EntityType="ReadModel.CustomerRentedItem" Width="1.5" PointX="1.75" PointY="2.375" Height="1.9802864583333326" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

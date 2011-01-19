@@ -1,0 +1,2 @@
+﻿Implement the 2 tests WhenRentingMedia_ThenMediaRentedByCustomer and WhenRentingMoreThan3Movies_ThenLimitExceededError
+ in the GivenCustomer test case.

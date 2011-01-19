@@ -1,0 +1,69 @@
+﻿Building your very first application
+====================================
+
+Step 1: define your command
+---------------------------
+
+In the Commands project, create an immutable class. 
+Name it in the imperative tense. 
+The class must inherits from CommandBase. 
+It will also have a few readonly fields, including an id of type Guid, and a constructor that will initialize those fields.
+Go in the MediaController in the website, and complete the Add() action with your newly created command.
+
+Step 2: define your event
+-------------------------
+
+The execution of your command will result in an event. 
+Create your event (immutable) class in the Events project. 
+Name it in the past.
+The class must be serializable and inherit from SourcedEvent.
+It will have the same few fields as the command, minus the id (which is already handled by SourcedEvent).
+
+Step 3: define your aggregate root
+----------------------------------
+
+Your first command will actually result in the creation of a new aggregate.
+Create your aggregate class in the Domain project. The class must inherit from AggregateRootMappedByConvention, which will give you basic services.
+You need to define a private empty constructor for NCQRS's repository to be able deserialize the aggregate. 
+You also need a public constructor that will call the base one, passing on the Id of the aggregate.
+The constructor parameters will be the same as the command constructor's.
+Inside the constructor, call the ApplyEvent(IEvent) method with a new instance of your event.
+Also define a protected void On[Name Of Your Event Class Here]([Your Event Class] evt) method, with nothing in it.
+This is the method that will be called by the infrastructure when the event neeeds to be applied to the aggregate.
+
+Step4: connect things together with a command handler
+-----------------------------------------------------
+
+Define a <Name Of Your Command Class>Handler class in the CommandHandlers project.
+The class must inherit from the abstract CommandExecutorBase<YourCommandClass>.
+There is only one method to implement.
+Implement it byS creating a new instance of your aggregate, passing the arguments from the command.
+Then call context.Accept() to notify the ambiant unit of work your want to commit your changes.
+Finally, go in the web site's Global.asax file, and specify the name of your command handler class in the InitializeCommandService() method.
+
+Step 5: create your view model
+------------------------------
+
+The view model class itself is already created and called "MediaItem". It has been mapped to the read model database using the entity framework.
+But you need to update this entity when your event is published.
+For that, create a MediaItemDenormalizer class in the ReadModel project, under the "Denormalizers" folder.
+The denormalizer must implement IEventHandler<YourEventClass>.
+Implement the method by adding a media item from your event's properties:
+
+            using (var context = new ReadModelContainer())
+            {
+                var newItem = new MediaItem
+                {
+                    Id = evnt.EventSourceId,
+                    Title = evnt.Title
+                };
+
+                context.MediaItems.AddObject(newItem);
+                context.SaveChanges();
+            }  
+
+Finally, register this handler in the website's global.asax InitializeEventBus() method. 
+Note: you only need to do this for your first denormalizer. The next ones will be registered automatically.
+
+Step 6: press F5 and look at your first CQRS application!
+---------------------------------------------------------

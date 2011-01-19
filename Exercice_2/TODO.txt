@@ -1,0 +1,37 @@
+﻿Exercice #2: complete the mini application
+==========================================
+
+The commands, read models, views, and controllers are already done for you, as well as the code for handling 2 commands: 
+
+- AddNewMediaCommand (from the previous exercice) 
+- RegisterNewCustomer, which looks a lot like AddNewMediaCommand, but for creating Customer aggregates.
+
+Complete the application by implementing command handlers, domain, events, and denormalizers for the 2 following commands:
+
+
+CustomerRentMediaCommand
+------------------------
+
+Story: as a teller, I want to be able notify the application the customer rented a given media, so the system knows when the customer is supposed to return the media.
+
+Acceptance criteria: 
+
+- the customer can not rent a media he already rented
+- the customer can not rent more than 3 medias at a time
+- the customer can not rent any more media if he is late returning one of his media (the renting duration is 7 days)
+
+Notes for the implementation: 
+
+- when a business rule is violated in the domain, throw a BusinessRuleViolatedException with the correct error code, so the UI can report the error correctly.
+- remember to separate your domain's method in 2 parts: a first section where you are checking all the business rules, and where you CANNOT modify the aggregate's state. And a second section where you are applying an event. 
+  The OnXXX() method must not throw any exception (all the checks must have been done in the validation section of the domain method).
+
+
+CustomerReturnMediaCommand
+--------------------------
+
+Story: as a teller, I want to be able to notify the application the customer returned a given media, so the media could be rented by another customer.
+
+Acceptance criteria:
+
+- The media must obviously have been previously rented.
